@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Taal Kita</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF8EE;--sf:#fff;--ink:#1B2A4E;--mu:#4A5878;--ln:#E8DCC8;--ac:#C2410C;--oa:#fff;--bl:#21468B;--ob:#fff;--ok:#E6F4EA;--oki:#14532D;--bd:#FDECEA;--bdi:#7A271A;--wn:#FEF3C7;--wni:#92400E;--tr:#F1E6D3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121828;--sf:#1D2640;--ink:#F3EEE4;--mu:#B6BFD6;--ln:#33405F;--ac:#FB923C;--oa:#1B1206;--bl:#8FB0F2;--ob:#0E1530;--ok:#143824;--oki:#A7E8BC;--bd:#4A1D18;--bdi:#FFC9C2;--wn:#4A3510;--wni:#FCD98A;--tr:#2A3555}}
+:root[data-theme="dark"]{--bg:#121828;--sf:#1D2640;--ink:#F3EEE4;--mu:#B6BFD6;--ln:#33405F;--ac:#FB923C;--oa:#1B1206;--bl:#8FB0F2;--ob:#0E1530;--ok:#143824;--oki:#A7E8BC;--bd:#4A1D18;--bdi:#FFC9C2;--wn:#4A3510;--wni:#FCD98A;--tr:#2A3555}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.fl{height:8px;display:flex}.fl i{flex:1}
+main{flex:1;padding:16px 20px 24px}
+h1{margin:0 0 4px;font-size:26px}p{margin:6px 0;line-height:1.5}.mu{color:var(--mu)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:20px;padding:18px;margin:14px 0}
+.hl{border:2px solid var(--bl)}.big{font-size:38px;font-weight:800}.cen{text-align:center}
+.b{min-height:48px;padding:0 18px;border-radius:16px;border:2px solid var(--ac);background:var(--sf);color:var(--ac);font:800 16px 'Nunito',sans-serif;cursor:pointer}
+.b.acc{background:var(--ac);color:var(--oa)}.b.blu{background:var(--bl);border-color:var(--bl);color:var(--ob)}
+.b.ok{background:var(--ok);border-color:var(--oki);color:var(--oki)}.b.bad{background:var(--bd);border-color:var(--bdi);color:var(--bdi)}
+.b:disabled{cursor:default}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.row .b{flex:1}
+.ic{width:46px;height:46px;border-radius:23px;border:0;background:var(--ac);color:var(--oa);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.bar{height:8px;border-radius:4px;background:var(--tr);margin:10px 0}.bar i{display:block;height:8px;border-radius:4px;background:var(--ac)}
+.ch{display:inline-block;padding:6px 12px;border-radius:12px;background:var(--tr);font-weight:800;margin:3px}.ch.ok{background:var(--ok);color:var(--oki)}.ch.wn{background:var(--wn);color:var(--wni)}
+.fix{border:2px solid var(--bl)}.lb{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--bl)}
+.msg{background:var(--wn);color:var(--wni);padding:10px 14px;border-radius:12px;margin:10px 0}
+.mic{width:84px;height:84px;border-radius:42px;border:0;background:var(--ac);color:var(--oa);cursor:pointer;box-shadow:0 0 0 8px var(--tr)}
+nav{position:sticky;bottom:0;display:flex;background:var(--sf);border-top:1px solid var(--ln)}
+nav button{flex:1;min-height:56px;border:0;border-top:3px solid transparent;background:transparent;color:var(--mu);font:700 12px 'Nunito',sans-serif;cursor:pointer}
+nav button.on{color:var(--ac);border-top-color:var(--ac);font-weight:800}
+</style></head><body><div id="app"></div>
+<script>
+const W=[
+['hallo','ha-LO','halo','Hallo, ik ben Sari.','Halo, saya Sari.','Mirip sekali dengan “halo”. Bunyi h dihembuskan lembut dari tenggorokan.'],
+['goedemorgen','KHU-de-MOR-khen','selamat pagi','Goedemorgen, meneer.','Selamat pagi, Pak.','Huruf g dibunyikan serak seperti “kh”. Goede = baik, morgen = pagi.'],
+['goedenavond','KHU-de-NA-fond','selamat malam','Goedenavond, mevrouw.','Selamat malam, Bu.','Goeden + avond (malam). Huruf v di tengah kata terdengar mirip f.'],
+['tot ziens','tot SINS','sampai jumpa','Tot ziens, tot morgen!','Sampai jumpa, sampai besok!','Tot = sampai, ziens = melihat. Huruf z dibunyikan seperti s.'],
+['dank je wel','dank ye WEL','terima kasih','Dank je wel voor de koffie.','Terima kasih untuk kopinya.','Dank = terima kasih. Bunyikan “je” seperti “ye”.'],
+['alsjeblieft','al-sye-BLIFT','tolong / silakan','Een koffie, alsjeblieft.','Satu kopi, tolong.','Pecah menjadi al-sje-blieft. Bunyi “ie” dibaca i panjang.'],
+['sorry','SO-ri','maaf','Sorry, ik begrijp het niet.','Maaf, saya tidak mengerti.','Sama seperti bahasa Inggris, dibaca “sori”.'],
+['ja','ya','ya','Ja, graag.','Ya, dengan senang hati.','Dibaca “ya”. Jawaban yang paling sering Anda pakai.'],
+['nee','néé (panjang)','tidak','Nee, dank je.','Tidak, terima kasih.','Bunyi ee panjang, seperti “é” yang ditahan: néé.'],
+['ik heet','ik héét','nama saya','Ik heet Sari.','Nama saya Sari.','Heet = bernama. Panjangkan bunyi ee: héét.'],
+['hoe gaat het?','hu khaat het','apa kabar?','Hoe gaat het met je?','Apa kabar?','Hoe dibaca “hu”, g serak, aa panjang. Jawaban umum: Goed, dank je!'],
+['aangenaam','AAN-khe-naam','senang berkenalan','Aangenaam, ik ben Sari.','Senang berkenalan, saya Sari.','Aan dibaca aa panjang, g serak. Dipakai saat pertama berkenalan.'],
+['een','één','satu','Ik heb één broer.','Saya punya satu saudara laki-laki.','Een = satu. Bunyi ee panjang: één.'],
+['twee','twéé','dua','Twee koffies, alsjeblieft.','Dua kopi, tolong.','Gabungan tw + ee panjang: twéé.'],
+['drie','dri','tiga','Ik heb drie katten.','Saya punya tiga kucing.','Dibaca “dri”. Bunyi ie = i panjang.'],
+['vier','fir','empat','Het is vier uur.','Sekarang pukul empat.','Dibaca “fir”. Huruf v di awal terdengar seperti f.'],
+['vijf','fèif','lima','Vijf euro, alsjeblieft.','Lima euro, tolong.','Bunyi ij seperti “èi”, v seperti f.'],
+['zes','zes','enam','Ik koop zes appels.','Saya membeli enam apel.','Z dibunyikan seperti s: “ses”.'],
+['zeven','ZÉ-fen','tujuh','Zeven dagen in een week.','Tujuh hari dalam seminggu.','Z seperti s, v seperti f: ZÉ-fen.'],
+['acht','akht','delapan','Ik sta om acht uur op.','Saya bangun pukul delapan.','Gabungan ch serak seperti “kh”: akht.'],
+['negen','NÉ-khen','sembilan','Het is negen uur.','Sekarang pukul sembilan.','Huruf g serak seperti “kh”: NÉ-khen.'],
+['tien','tin','sepuluh','Tien minuten, alsjeblieft.','Sepuluh menit, tolong.','Dibaca “tin” dengan i panjang.'],
+['brood','brot','roti','Ik wil graag brood.','Saya mau roti.','Bunyi oo panjang. Huruf d di akhir dibaca t.'],
+['kaas','kaas','keju','Ik hou van kaas.','Saya suka keju.','Bunyi aa panjang: kaas.'],
+['water','WA-ter','air','Een glas water, alsjeblieft.','Segelas air, tolong.','W terdengar antara w dan v. Tekanan di suku kata pertama.'],
+['koffie','KO-fi','kopi','Ik drink koffie.','Saya minum kopi.','Tekanan di awal: KO-fi, mirip “kopi”.'],
+['thee','téé','teh','Heeft u thee?','Apakah Anda punya teh?','Th dibaca t biasa, ee panjang: téé.'],
+['melk','melk','susu','Melk in de koffie.','Susu di dalam kopi.','Dibaca “melk”. Jangan menambah e di tengah.'],
+['appel','A-pel','apel','Dit is een appel.','Ini sebuah apel.','Tekanan di awal: A-pel, a pendek.'],
+['rijst','rèist','nasi','Ik eet rijst.','Saya makan nasi.','Bunyi ij seperti “èi”, lalu st: rèist.'],
+['ei','èi','telur','Ik wil een ei.','Saya mau satu telur.','Dibaca “èi”, satu suku kata.'],
+['vis','fis','ikan','Ik eet graag vis.','Saya suka makan ikan.','Huruf v di awal seperti f: fis.'],
+['moeder','MU-der','ibu','Mijn moeder woont in Jakarta.','Ibu saya tinggal di Jakarta.','Bunyi oe dibaca u panjang: MU-der.'],
+['vader','FA-der','ayah','Mijn vader werkt veel.','Ayah saya banyak bekerja.','V seperti f, a panjang: FA-der.'],
+['zus','zus','saudara perempuan','Ik heb een zus.','Saya punya satu saudara perempuan.','Bunyi u pendek, bibir agak bulat, antara “u” dan “e”.'],
+['broer','brur','saudara laki-laki','Mijn broer heet Adi.','Saudara laki-laki saya bernama Adi.','Oe dibaca u: “brur”, huruf r digetarkan.'],
+['zoon','zon (o panjang)','anak laki-laki','Zijn zoon is tien.','Anak laki-lakinya berumur sepuluh.','Bunyi oo panjang; z dibunyikan seperti s.'],
+['dochter','DOKH-ter','anak perempuan','Haar dochter heet Lisa.','Putrinya bernama Lisa.','Gabungan ch serak seperti “kh”: DOKH-ter.'],
+['opa','O-pa','kakek','Mijn opa is oud.','Kakek saya sudah tua.','Tekanan di awal, o panjang: O-pa.'],
+['oma','O-ma','nenek','Mijn oma kookt graag.','Nenek saya suka memasak.','Sama seperti opa: O-ma.'],
+['familie','fa-MI-li','keluarga','Mijn familie is groot.','Keluarga saya besar.','Tekanan di suku kata MI: fa-MI-li.'],
+['kind','kint','anak','Het kind speelt.','Anak itu bermain.','Huruf d di akhir dibaca t: kint.'],
+['zijn','zèin','adalah / ada','Ik ben blij.','Saya senang.','Kata kerja paling penting. Ik ben = saya adalah. Bunyi ij seperti “èi”.'],
+['hebben','HE-ben','punya','Ik heb een fiets.','Saya punya sepeda.','Tekanan di awal: HE-ben. Ik heb = saya punya.'],
+['gaan','khaan','pergi','Ik ga naar huis.','Saya pergi ke rumah.','Huruf g serak seperti “kh”, aa panjang. Ik ga = saya pergi.'],
+['komen','KO-men','datang','Ik kom uit Indonesië.','Saya berasal dari Indonesia.','Ik kom uit = saya berasal dari. Tekanan di awal.'],
+['eten','É-ten','makan','Wij eten samen.','Kami makan bersama.','Bunyi e panjang di awal: É-ten.'],
+['drinken','DRIN-ken','minum','Ik drink water.','Saya minum air.','Dibaca sesuai ejaannya: DRIN-ken.'],
+['willen','WI-len','ingin','Ik wil koffie.','Saya mau kopi.','Ik wil = saya mau. Huruf w terdengar antara w dan v.'],
+['kunnen','KU-nen','bisa','Ik kan fietsen.','Saya bisa bersepeda.','Ik kan = saya bisa. Bunyi u pendek, bibir agak bulat.'],
+['spreken','SPRÉ-ken','berbicara','Ik spreek een beetje Nederlands.','Saya berbicara sedikit bahasa Belanda.','Spreek = bicara. Bunyi ee panjang: sprééken.'],
+['begrijpen','be-KHRÈI-pen','mengerti','Ik begrijp het niet.','Saya tidak mengerti.','Huruf g serak, ij seperti “èi”. Tekanan di GRIJ.'],
+['de winkel','dè WIN-kel','toko','De winkel is open.','Toko itu buka.','Dibaca WIN-kel. De winkel = toko itu.'],
+['de prijs','dè prèis','harga','Wat is de prijs?','Berapa harganya?','Bunyi ij seperti “èi”: prèis.'],
+['betalen','be-TA-len','membayar','Ik wil graag betalen.','Saya ingin membayar.','Tekanan di TA: be-TA-len.'],
+['de trein','dè trèin','kereta','De trein komt zo.','Kereta segera datang.','Bunyi ei dibaca “èi”: trèin.'],
+['de bus','dè bus','bus','Ik neem de bus.','Saya naik bus.','Bunyi u pendek, bibir agak bulat, antara “u” dan “e”.'],
+['het station','het sta-SYON','stasiun','Waar is het station?','Di mana stasiunnya?','Akhiran -tion dibaca “syon”: sta-SYON.'],
+['het kaartje','het KAAR-tye','tiket','Een kaartje, alsjeblieft.','Satu tiket, tolong.','Akhiran -tje dibaca “tye” dan berarti kecil: kaart + je.'],
+['duur','dür (bibir bulat)','mahal','Dat is te duur.','Itu terlalu mahal.','Bibir bulat seperti mengucap “u”, tetapi lidah di posisi “i”.'],
+['goedkoop','KHUT-kop','murah','Dit is goedkoop.','Ini murah.','Goed + koop (beli). Huruf g serak: KHUT-kop.'],
+['hoeveel kost het?','hu-FÉL kost het','berapa harganya?','Sorry, hoeveel kost het?','Maaf, berapa harganya?','Hoe dibaca “hu”, veel dibaca “fél”. Kalimat penting saat berbelanja.'],
+['links','links','kiri','Ga naar links.','Pergi ke kiri.','Dibaca sesuai ejaannya: links.'],
+['rechts','rekhts','kanan','Het station is rechts.','Stasiunnya di sebelah kanan.','Gabungan ch serak: “rekhts”.'],
+['rechtdoor','rekht-DOR','lurus','Ga rechtdoor.','Jalan lurus.','Recht + door = lurus terus. Tekanan di DOOR.'],
+['hier','hir','di sini','Ik woon hier.','Saya tinggal di sini.','Bunyi ie = i panjang: hir.'],
+['daar','daar','di sana','De bus is daar.','Bus ada di sana.','Bunyi aa panjang: daar.'],
+['waar','waar','di mana','Waar woon je?','Kamu tinggal di mana?','Aa panjang, w terdengar antara w dan v.'],
+['dichtbij','dikht-BÈI','dekat','De winkel is dichtbij.','Tokonya dekat.','Dicht = dekat, bij = di. Huruf ch serak, ij seperti “èi”.'],
+['ver','fer','jauh','Het is niet ver.','Tidak jauh.','Dibaca “fer” dengan e pendek.'],
+['de straat','dè straat','jalan','Deze straat is lang.','Jalan ini panjang.','Bunyi aa panjang; str dibaca jelas: straat.'],
+['het toilet','het twa-LET','toilet','Waar is het toilet?','Di mana toiletnya?','Dibaca “twa-LET”, tekanan di akhir.']];
+W.push(
+['goedemiddag','KHU-de-MI-dakh','selamat siang','Goedemiddag, hoe gaat het?','Selamat siang, apa kabar?','Middag = siang. Huruf g serak, akhiran ag seperti “akh”.'],
+['goed, dank je','khut dank ye','baik, terima kasih','Goed, dank je. En met jou?','Baik, terima kasih. Dan kamu?','Jawaban umum untuk hoe gaat het? Goed dibaca “khut”.'],
+['tot morgen','tot MOR-khen','sampai besok','Tot morgen op school.','Sampai besok di sekolah.','Tot = sampai, morgen = besok. Huruf g serak.'],
+['elf','elf','sebelas','Het is elf uur.','Sekarang pukul sebelas.','Dibaca “elf”, satu suku kata.'],
+['twaalf','twaalf','dua belas','Ik heb twaalf appels.','Saya punya dua belas apel.','Tw + aa panjang: twaalf.'],
+['twintig','TWIN-tikh','dua puluh','Twintig euro, alsjeblieft.','Dua puluh euro, tolong.','Akhiran -tig dibaca “tikh” dengan g serak.'],
+['honderd','HON-dert','seratus','Het kost honderd euro.','Harganya seratus euro.','Tekanan di awal. Huruf d di akhir dibaca t.'],
+['nul','nul','nol','Het is nul graden.','Suhunya nol derajat.','Bunyi u pendek, bibir agak bulat.'],
+['de kip','dè kip','ayam','Ik eet kip met rijst.','Saya makan ayam dengan nasi.','Dibaca “kip” pendek. De kip = ayam.'],
+['de groente','dè KHRUN-te','sayur','Ik eet veel groente.','Saya banyak makan sayur.','Huruf g serak “kh”, oe dibaca u: KHRUN-te.'],
+['de suiker','dè SÖI-ker','gula','Geen suiker, dank je.','Tanpa gula, terima kasih.','Bunyi ui sulit: mulai dengan bibir bulat, lalu geser ke “ai”.'],
+['het sap','het sap','jus','Een glas sap, alsjeblieft.','Segelas jus, tolong.','Dibaca “sap”. Het sap = jus.'],
+['de soep','dè sup','sup','De soep is warm.','Supnya hangat.','Oe dibaca u: “sup”.'],
+['de tante','dè TAN-te','bibi','Mijn tante woont in Amsterdam.','Bibi saya tinggal di Amsterdam.','Tekanan di awal: TAN-te. Mirip kata “tante” di Indonesia.'],
+['de oom','dè om (o panjang)','paman','Mijn oom is leraar.','Paman saya seorang guru.','Bunyi oo panjang: “om”.'],
+['de man','dè man','suami / pria','Haar man werkt hier.','Suaminya bekerja di sini.','Man bisa berarti suami atau pria, tergantung konteks.'],
+['de vrouw','dè frau','istri / wanita','Die vrouw is aardig.','Wanita itu baik hati.','Bunyi ou dibaca “au”: frau. Bisa berarti istri atau wanita.'],
+['de vriend','dè frint','teman','Dit is mijn vriend.','Ini teman saya.','V seperti f, d di akhir dibaca t: frint.'],
+['lezen','LÉ-zen','membaca','Ik lees een boek.','Saya membaca buku.','Bunyi ee panjang: LÉ-zen. Ik lees = saya membaca.'],
+['schrijven','SKHRÈI-ven','menulis','Ik schrijf een brief.','Saya menulis surat.','Sch dibaca “skh”, ij seperti “èi”.'],
+['werken','WER-ken','bekerja','Ik werk in een winkel.','Saya bekerja di sebuah toko.','Ik werk = saya bekerja. Tekanan di awal.'],
+['wonen','WO-nen','tinggal','Ik woon in Jakarta.','Saya tinggal di Jakarta.','Ik woon = saya tinggal. Bunyi oo panjang.'],
+['leren','LÉ-ren','belajar','Ik leer Nederlands.','Saya belajar bahasa Belanda.','Ik leer = saya belajar. Bunyi ee panjang.'],
+['de tram','dè tram','trem','De tram is vol.','Tremnya penuh.','Dibaca sesuai ejaannya: tram.'],
+['het geld','het khelt','uang','Ik heb geen geld.','Saya tidak punya uang.','Huruf g serak “kh”, d di akhir dibaca t.'],
+['de markt','dè markt','pasar','Ik ga naar de markt.','Saya pergi ke pasar.','Kedua konsonan di akhir dibaca jelas: markt.'],
+['de kassa','dè KA-sa','kasir','Waar is de kassa?','Di mana kasirnya?','Tekanan di awal: KA-sa.'],
+['de tas','dè tas','tas','Mijn tas is zwaar.','Tas saya berat.','Dibaca “tas”. De tas = tas.'],
+['boven','BO-ven','atas','De kat is boven.','Kucing itu ada di atas.','Tekanan di awal: BO-ven.'],
+['onder','ON-der','bawah','Het boek ligt onder de tas.','Buku itu ada di bawah tas.','Tekanan di awal: ON-der.'],
+['naast','naast','di sebelah','De winkel is naast het station.','Toko itu di sebelah stasiun.','Bunyi aa panjang: naast.'],
+['voor','for (o panjang)','di depan','Ik sta voor de winkel.','Saya berdiri di depan toko.','V seperti f, oo panjang: “for”.'],
+['achter','AKH-ter','di belakang','De fiets staat achter het huis.','Sepeda ada di belakang rumah.','Gabungan ch serak: AKH-ter.']);
+const R=(a,b)=>Array.from({length:b-a},(_,k)=>a+k);
+W.push(
+['welkom','WEL-kom','selamat datang','Welkom in Nederland!','Selamat datang di Belanda!','Tekanan di awal: WEL-kom, mirip “welcome”.'],
+['graag gedaan','khraakh khe-DAAN','sama-sama','Dank je! Graag gedaan.','Terima kasih! Sama-sama.','Dua huruf g serak. Dipakai sebagai balasan dank je wel.'],
+['goedenacht','KHU-de-nakht','selamat tidur','Goedenacht, slaap lekker.','Selamat tidur, tidur nyenyak.','Dipakai sebelum tidur, berbeda dengan goedenavond. Ch serak.'],
+['tot straks','tot straks','sampai nanti','Tot straks bij het station.','Sampai nanti di stasiun.','Dipakai kalau Anda akan bertemu lagi di hari yang sama.'],
+['succes','sük-SES','semoga berhasil','Succes met je les!','Semoga sukses dengan pelajaranmu!','Bunyi u pendek dengan bibir bulat. Tekanan di akhir.'],
+['dertien','DER-tin','tiga belas','Het kost dertien euro.','Harganya tiga belas euro.','Drie + tien yang disingkat. Tekanan di awal.'],
+['veertien','FÉR-tin','empat belas','Veertien dagen is twee weken.','Empat belas hari adalah dua minggu.','Vier + tien. Bunyi ee panjang di awal.'],
+['vijftien','FÈIF-tin','lima belas','Ik wacht vijftien minuten.','Saya menunggu lima belas menit.','Vijf + tien. Bunyi ij seperti “èi”.'],
+['dertig','DER-tikh','tiga puluh','Dertig procent korting.','Diskon tiga puluh persen.','Akhiran -tig dibaca “tikh” dengan g serak.'],
+['duizend','DÖI-zent','seribu','Duizend euro is veel.','Seribu euro itu banyak.','Bunyi ui sulit: bibir bulat, lalu geser ke “ai”. D di akhir dibaca t.'],
+['de boter','dè BO-ter','mentega','Brood met boter.','Roti dengan mentega.','Bunyi o panjang di awal: BO-ter.'],
+['de tomaat','dè to-MAAT','tomat','Deze tomaat is rood.','Tomat ini merah.','Tekanan di akhir: to-MAAT, aa panjang.'],
+['de banaan','dè ba-NAAN','pisang','Ik eet een banaan.','Saya makan sebuah pisang.','Tekanan di akhir: ba-NAAN.'],
+['het ontbijt','het ont-BÈIT','sarapan','Het ontbijt is klaar.','Sarapan sudah siap.','Bunyi ij seperti “èi”, dan t di akhir terdengar jelas.'],
+['de aardappel','dè AART-a-pel','kentang','Ik eet aardappels en vis.','Saya makan kentang dan ikan.','Secara harfiah “apel dari tanah”. Bunyi aa panjang.'],
+['de baby','dè BÉ-bi','bayi','De baby slaapt.','Bayi itu tidur.','Dibaca “BÉ-bi”, mirip bahasa Inggris.'],
+['de buurman','dè BÜR-man','tetangga (laki-laki)','Mijn buurman is aardig.','Tetangga saya baik hati.','Bunyi uu: bibir bulat tetapi lidah di posisi “i”.'],
+['de leraar','dè LÉ-rar','guru','De leraar spreekt langzaam.','Gurunya berbicara pelan.','Leren = belajar, leraar = pengajar. Akhiran -aar dibaca “ar”.'],
+['de dokter','dè DOK-ter','dokter','De dokter werkt hier.','Dokternya bekerja di sini.','Tekanan di awal: DOK-ter.'],
+['het gezin','het khe-ZIN','keluarga inti','Mijn gezin woont in Jakarta.','Keluarga inti saya tinggal di Jakarta.','G serak, tekanan di akhir. Gezin = orang tua dan anak-anaknya.'],
+['zien','zin','melihat','Ik zie een fiets.','Saya melihat sebuah sepeda.','Ik zie = saya melihat. Z seperti s.'],
+['horen','HO-ren','mendengar','Ik hoor muziek.','Saya mendengar musik.','Ik hoor = saya mendengar. Bunyi o panjang.'],
+['nemen','NÉ-men','mengambil','Ik neem een kaartje.','Saya ambil satu tiket.','Ik neem = saya mengambil. Juga dipakai untuk naik: de bus nemen.'],
+['geven','KHÉ-ven','memberi','Ik geef je een appel.','Saya memberimu sebuah apel.','Huruf g serak. Ik geef = saya memberi.'],
+['kopen','KO-pen','membeli','Ik koop brood.','Saya membeli roti.','Ik koop = saya membeli. Bunyi oo panjang.'],
+['de korting','dè KOR-ting','diskon','Er is korting vandaag.','Ada diskon hari ini.','Tekanan di awal: KOR-ting.'],
+['open','O-pen','buka','Is de markt open?','Apakah pasarnya buka?','Tekanan di awal, o panjang: O-pen.'],
+['gesloten','khe-SLO-ten','tutup','De winkel is gesloten.','Tokonya tutup.','G serak, tekanan di SLO: khe-SLO-ten.'],
+['de kassabon','dè KA-sa-bon','struk','Mag ik de kassabon?','Boleh saya minta struknya?','Kassa + bon (kertas bukti). Tekanan di awal.'],
+['pinnen','PI-nen','bayar dengan kartu','Kan ik pinnen?','Bisakah saya membayar dengan kartu?','Kata khas Belanda untuk membayar dengan kartu debit.'],
+['de stad','dè stat','kota','Amsterdam is een grote stad.','Amsterdam adalah kota besar.','Huruf d di akhir dibaca t: stat.'],
+['het huis','het höis','rumah','Het huis is groot.','Rumah itu besar.','Bunyi ui: bibir bulat, lalu geser ke “ai”.'],
+['de school','dè skhol','sekolah','De school begint om acht uur.','Sekolah mulai pukul delapan.','Sch dibaca “skh”, oo panjang.'],
+['het park','het park','taman','Het park is mooi.','Tamannya indah.','Dibaca “park”, satu suku kata.'],
+['de ingang','dè IN-khang','pintu masuk','De ingang is links.','Pintu masuknya di kiri.','In = masuk, gang = jalan. Huruf g serak.']);
+W.push(
+['de fiets','dè fits','sepeda','Ik ga met de fiets naar school.','Saya pergi ke sekolah naik sepeda.','Dibaca “fits”. Sepeda adalah kendaraan khas Belanda.'],
+['de telefoon','dè te-le-FON','telepon / ponsel','Mijn telefoon is nieuw.','Telepon saya baru.','Tekanan di akhir: te-le-FON, oo panjang.'],
+['de sleutel','dè SLÖ-tel','kunci','Waar is mijn sleutel?','Di mana kunci saya?','Bunyi eu seperti “ö” (bibir bulat): SLÖ-tel.'],
+['het boek','het buk','buku','Dit boek is leuk.','Buku ini seru.','Oe dibaca u panjang: buk.'],
+['de pen','dè pen','pulpen','Heb je een pen?','Apakah kamu punya pulpen?','Dibaca “pen”, sama seperti dalam bahasa Indonesia.'],
+['de tafel','dè TA-fel','meja','De tafel is groot.','Mejanya besar.','Tekanan di awal: TA-fel, a panjang.'],
+['de stoel','dè stul','kursi','Ga zitten op de stoel.','Duduklah di kursi.','Oe dibaca u: “stul”.'],
+['de deur','dè dör','pintu','Doe de deur dicht.','Tutup pintunya.','Bunyi eu: bibir bulat seperti “ö”.'],
+['het raam','het raam','jendela','Het raam is open.','Jendelanya terbuka.','Bunyi aa panjang: raam.'],
+['het bed','het bet','tempat tidur','Ik ga naar bed.','Saya pergi tidur.','Huruf d di akhir dibaca t. Naar bed = pergi tidur.'],
+['de lamp','dè lamp','lampu','De lamp is kapot.','Lampunya rusak.','Dibaca “lamp”.'],
+['de klok','dè klok','jam dinding','De klok is rond.','Jam itu bulat.','Dibaca “klok” dengan o pendek.'],
+['de koelkast','dè KUL-kast','kulkas','De koelkast is leeg.','Kulkasnya kosong.','Koel = dingin, kast = lemari. Oe dibaca u.'],
+['de auto','dè AU-to','mobil','Mijn auto is rood.','Mobil saya merah.','Bunyi au dibaca “au”: AU-to.'],
+['de paraplu','dè pa-ra-PLÜ','payung','Neem een paraplu mee.','Bawalah payung.','Tekanan di akhir; bunyi u dengan bibir bulat.'],
+['de bril','dè bril','kacamata','Ik heb een bril nodig.','Saya butuh kacamata.','Dibaca “bril”.'],
+['de computer','dè kom-PYÜ-ter','komputer','De computer staat aan.','Komputernya menyala.','Tekanan di tengah: kom-PYU-ter.'],
+['de kamer','dè KA-mer','kamar','Mijn kamer is klein.','Kamar saya kecil.','Tekanan di awal: KA-mer.'],
+['de jas','dè yas','jaket / mantel','Het is koud, doe je jas aan.','Dingin, pakailah jaketmu.','Huruf j dibaca “y”: yas.'],
+['de portemonnee','dè por-te-mo-NÉ','dompet','Waar is mijn portemonnee?','Di mana dompet saya?','Tekanan di akhir, bunyi ee panjang.']);
+const TH=[['Salam',[...R(0,12),...R(72,75),...R(105,110)]],['Angka',[...R(12,22),...R(75,80),...R(110,115)]],['Makanan',[...R(22,32),...R(80,85),...R(115,120)]],['Keluarga',[...R(32,42),...R(85,90),...R(120,125)]],['Kata kerja',[...R(42,52),...R(90,95),...R(125,130)]],['Belanja',[...R(52,62),...R(95,100),...R(130,135)]],['Tempat',[...R(62,72),...R(100,105),...R(135,140)]],['Benda',[...R(140,160)]]];
+const pool=()=>TH[S.th][1];
+let P={known:{},wrong:{},cb:{},ok:0};
+try{P=Object.assign(P,JSON.parse(localStorage.getItem('nl1')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('nl1',JSON.stringify(P))}catch(e){}};
+let S={tab:'home',th:0,ci:0,rev:0,fix:0,q:null,qn:0,sp:null,last:-1};
+const $=s=>document.querySelector(s);
+const sv='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>';
+const spk=(t,l,r)=>`<button class="ic" aria-label="${l}" data-a="say" data-v="${encodeURIComponent(t)}" data-r="${r||.9}">${sv}</button>`;
+const btn=(a,t,c,v)=>`<button class="b ${c||''}" data-a="${a}"${v!=null?` data-v="${v}"`:''}>${t}</button>`;
+function say(t,r){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='nl-NL';u.rate=r;const v=speechSynthesis.getVoices().find(v=>v.lang.replace('_','-').startsWith('nl'));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+function pick(){const pl=pool(),ws=pl.map(i=>i==S.last?0:1+(P.wrong[i]||0)*2);let r=Math.random()*ws.reduce((a,b)=>a+b,0),k=0;while(r>ws[k]&&k<pl.length-1){r-=ws[k];k++}S.last=pl[k];return pl[k]}
+const lev=(a,b)=>{const d=Array.from({length:a.length+1},(_,i)=>[i,...Array(b.length).fill(0)]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]==b[j-1]?0:1));return d[a.length][b.length]};
+const nz=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(Boolean);
+const sim=(a,b)=>a==b||(a.length>3&&1-lev(a,b)/Math.max(a.length,b.length)>=.75);
+function dots(n){return`<div class="mu" style="font-size:13px;font-weight:700">Salah ${n} dari 3 ${'●'.repeat(n)}${'○'.repeat(3-n)}</div>`}
+const fixBox=i=>`<div class="card fix"><div class="lb">KOREKSI</div><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div class="big" style="font-size:28px">${W[i][0]}</div>${spk(W[i][0],'Dengarkan')}</div><p><b>${W[i][2]}</b> (${W[i][1]})</p><p>${W[i][5]}</p><p class="mu">Contoh: ${W[i][3]} = ${W[i][4]}</p></div>`;
+const V={
+home(){const pl=pool(),k=pl.filter(i=>P.known[i]).length,tc=TH.map((t,n)=>{const c=t[1].filter(i=>P.known[i]).length;return`<button class="b ${n==S.th?'blu':''}" style="flex:1 1 140px" data-a="th" data-v="${n}">${t[0]} ${c}/${t[1].length}</button>`}).join('');return`<h1>Taal Kita</h1><p class="mu">Belajar Belanda, selangkah demi selangkah. Pilih tema:</p><div class="row" style="margin:0 0 4px">${tc}</div><div class="card hl"><b>${TH[S.th][0]}: ${k} dari ${pl.length} kata dikuasai</b><div class="bar"><i style="width:${k/pl.length*100}%"></i></div><div class="row">${btn('tab','Mulai kartu','acc','cards')}${btn('tab','Latihan','','quiz')}${btn('tab','Uji bicara','','speak')}${btn('tab','Susun kalimat','','susun')}</div></div><div>${pl.map(i=>`<span class="ch ${P.known[i]?'ok':''}">${W[i][0]}</span>`).join('')}</div>`},
+cards(){const i=S.ci,w=W[i];if(S.fix)return`<h1>Koreksi kata</h1><p class="mu">Kata ini belum tahu 3 kali. Pelajari dulu, lalu kita lanjut.</p>${fixBox(i)}${btn('next','Mengerti, lanjut','acc')}`;
+return`<h1>Kartu kosakata</h1><p class="mu">${TH[S.th][0]} · kartu ${pool().indexOf(i)+1} / ${pool().length}</p><div class="card hl cen"><div style="display:flex;align-items:center;justify-content:center;gap:12px"><div class="big">${w[0]}</div>${spk(w[0],'Dengarkan kata')}</div><p class="mu">${w[1]}</p>${S.rev?`<div style="font-size:24px;font-weight:800;color:var(--bl)">${w[2]}</div><hr style="border:0;border-top:1px solid var(--ln);margin:14px 0"><div style="display:flex;align-items:center;justify-content:center;gap:10px"><b>${w[3]}</b>${spk(w[3],'Dengarkan kalimat')}</div><p class="mu">${w[4]}</p>`:btn('rev','Lihat arti','blu')}</div>${S.rev?`<div class="row">${btn('no','Belum tahu')}${btn('yes','Sudah tahu','blu')}</div>`:''}`},
+quiz(){const q=S.q,w=W[q.i],lis=q.l;return`<h1>Latihan</h1><p class="mu">${lis?'Dengarkan, lalu pilih artinya.':'Pilih arti kata ini.'} Benar: ${P.ok}</p><div class="card hl cen">${lis?spk(w[0],'Putar audio'):`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div class="big">${w[0]}</div>${spk(w[0],'Dengarkan')}</div>`}</div>${q.t.length&&!q.done?dots(q.t.length):''}<div style="display:flex;flex-direction:column;gap:10px">${q.o.map(o=>{const bad=q.t.includes(o),good=q.done&&o==q.i;return`<button class="b ${good?'ok':bad?'bad':''}" data-a="opt" data-v="${o}" ${bad||q.done?'disabled':''}>${W[o][2]}</button>`}).join('')}</div>${q.t.length&&!q.done?`<div class="msg">${q.t.length==1?`Belum tepat. Petunjuk: arti diawali huruf “${w[2][0]}”.`:'Masih belum. Dengarkan lagi kata ini, lalu coba sekali lagi.'}</div>`:''}${q.done?(q.fix?`<div class="msg">Soal ini akan muncul lagi nanti untuk diulang.</div>${fixBox(q.i)}`:`<div class="msg" style="background:var(--ok);color:var(--oki)"><b>Benar!</b> ${w[5]}</div>`)+btn('nq','Lanjut','acc'):''}`},
+speak(){const s=S.sp,w=W[s.i],isW=s.t==w[0],r=s.r,pass=r&&r.score>=.8;return`<h1>Uji berbicara</h1><p class="mu">Dengarkan contoh, lalu ucapkan.</p><div class="card hl cen"><div class="big" style="font-size:${isW?38:28}px">${s.t}</div><p class="mu">${isW?w[1]:w[4]}</p><div class="row" style="justify-content:center">${spk(s.t,'Dengar')}${btn('slow','Pelan')}</div></div><div class="cen"><button class="mic" aria-label="Mulai bicara" data-a="mic"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button><p class="mu">${s.on?'Mendengarkan…':'Tekan dan ucapkan'}</p></div>${s.msg?`<div class="msg">${s.msg}</div>`:''}${r?`<div class="card"><b>Hasil: ${Math.round(r.score*100)}%</b><div>${r.w.map(x=>`<span class="ch ${x[1]?'ok':'wn'}">${x[0]}</span>`).join('')}</div></div>`:''}${r&&!pass&&s.tr<3?dots(s.tr)+`<p>Coba lagi, ucapkan lebih jelas.</p>`:''}${r&&!pass&&s.tr>=3?`<div class="msg">Kata ini akan lebih sering muncul di latihan.</div>`+fixBox(s.i)+`<p class="mu">Bagian yang meleset: ${r.w.filter(x=>!x[1]).map(x=>x[0]).join(', ')}</p><div class="row">${btn('skip','Lewati dulu')}${btn('again','Coba lagi','acc')}</div>`:''}${pass?`<div class="msg" style="background:var(--ok);color:var(--oki)"><b>Bagus!</b> Ucapan Anda terdengar jelas.</div>${btn('skip','Lanjut','acc')}`:''}`}};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const CH=['Kapan memakai de dan kapan het?','Kenapa huruf g dibaca serak?','Apa beda jij dan je?','Bagaimana menyusun kalimat dasar?'];
+const msgsH=()=>(S.tt||[]).map(m=>`<div class="card" style="${m.r=='u'?'background:var(--tr);':''}white-space:pre-wrap"><div class="lb">${m.r=='u'?'ANDA':'TUTOR'}</div>${esc(m.t)||'<span class="mu">Tutor sedang berpikir…</span>'}</div>`).join('');
+function updT(){const m=$('#msgs');if(m){m.innerHTML=msgsH();window.scrollTo(0,document.body.scrollHeight)}}
+document.addEventListener('input',e=>{if(e.target.id=='tin')S.tin=e.target.value});
+V.tanya=()=>`<h1>Tanya tutor</h1><p class="mu">Tanyakan apa saja tentang bahasa Belanda. Jawaban dibuat oleh Claude, jadi cek ulang untuk hal yang penting.</p><div id="msgs">${msgsH()}</div>${S.te?`<div class="msg">${S.te}</div>`:''}${!(S.tt||[]).length?`<div class="row">${CH.map(c=>`<button class="b" style="flex:1 1 100%;text-align:left" data-a="chip" data-v="${encodeURIComponent(c)}">${c}</button>`).join('')}</div>`:''}<textarea id="tin" rows="3" placeholder="Tulis pertanyaan Anda…" style="width:100%;box-sizing:border-box;margin-top:12px;padding:12px;border-radius:14px;border:2px solid var(--ln);background:var(--sf);color:var(--ink);font:400 16px 'Nunito',sans-serif">${esc(S.tin||'')}</textarea><div class="row"><button class="b acc" data-a="send" ${S.tl?'disabled':''}>${S.tl?'Menjawab…':'Kirim'}</button>${(S.tt||[]).length?btn('clear','Mulai baru'):''}</div>`;
+async function send(){const q=(S.tin||'').trim();if(!q||S.tl)return;S.tt=S.tt||[];S.te='';
+const ctx=Object.keys(P.wrong).filter(i=>P.wrong[i]>0&&W[i]).sort((a,b)=>P.wrong[b]-P.wrong[a]).slice(0,5).map(i=>W[i][0]).join(', ');
+const hist=S.tt.slice(-6).map(m=>(m.r=='u'?'Murid: ':'Tutor: ')+m.t).join('\n');
+const a={r:'a',t:''};S.tt.push({r:'u',t:q},a);S.tin='';S.tl=1;render();updT();
+try{if(typeof claude=='undefined')throw{code:'na'};const sample=await claude.use('sample');if(!sample)throw{code:'na'};
+const r=await sample('Kamu adalah tutor bahasa Belanda yang ramah untuk pemula total penutur bahasa Indonesia (level A1). Jawab dalam bahasa Indonesia, singkat (maksimal sekitar 120 kata), jelas, dengan contoh kalimat Belanda beserta artinya. Tulis cara baca dengan ejaan yang mudah bagi penutur Indonesia. Jangan memakai format markdown seperti tanda bintang atau pagar. Hanya bahas pembelajaran bahasa Belanda; jika di luar topik, arahkan kembali dengan sopan. Jika tidak yakin, katakan terus terang.'+(ctx?'\nKata yang sering dijawab salah oleh murid: '+ctx+'.':'')+(hist?'\nRiwayat percakapan:\n'+hist:'')+'\nPertanyaan murid: '+q,{cache:false,onText:x=>{a.t=x.text;updT()}});a.t=r.text}
+catch(e){S.tt.splice(-2);S.tin=q;S.te=e&&e.code=='na'?'Tutor AI hanya tersedia saat halaman dibuka lewat claude.ai di browser.':e&&e.code=='not_granted'?'Izin untuk tutor AI belum diberikan. Kirim pertanyaan lagi dan setujui permintaannya.':e&&e.code=='rate_limited'?'Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.':'Tutor sedang tidak bisa menjawab. Coba lagi sebentar. (Kode: '+((e&&(e.code||e.message))||e)+')'}
+S.tl=0;render();updT()}
+function newSz(){const pl=pool().filter(i=>W[i][3].split(' ').length>=3);let i;do{i=pl[Math.floor(Math.random()*pl.length)]}while(pl.length>1&&i==S.zl);S.zl=i;const tk=W[i][3].split(' ');S.sz={i,tk,bank:sh(tk.map((t,k)=>k)),pk:[],tr:0,done:0,fix:0,msg:''}}
+V.susun=()=>{const z=S.sz,w=W[z.i],ch=(k,a)=>`<button class="ch" style="border:0;min-height:44px;cursor:pointer;font:800 18px 'Nunito',sans-serif;color:var(--ink)" data-a="${a}" data-v="${k}" ${z.done?'disabled':''}>${z.tk[k]}</button>`;
+return`<h1>Susun kalimat</h1><p class="mu">Ketuk kata untuk menyusun kalimat Belanda yang benar.</p><div class="card hl cen"><div class="lb">ARTINYA</div><div style="font-size:20px;font-weight:800;margin-top:4px">${w[4]}</div></div><div class="card" style="min-height:64px">${z.pk.map(k=>ch(k,'zu')).join('')||'<span class="mu">Kalimat Anda muncul di sini</span>'}</div><div>${z.bank.filter(k=>!z.pk.includes(k)).map(k=>ch(k,'zp')).join('')}</div>${z.tr&&!z.done?dots(z.tr):''}${z.msg&&!z.done?`<div class="msg">${z.msg}</div>`:''}${z.done?(z.fix?`<div class="card fix"><div class="lb">KOREKSI</div><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><div style="font-size:22px;font-weight:800">${w[3]}</div>${spk(w[3],'Dengarkan kalimat')}</div><p class="mu">${w[4]}</p><p>${w[5]}</p></div><div class="msg">Kalimat ini akan muncul lagi nanti.</div>`:`<div class="msg" style="background:var(--ok);color:var(--oki)"><b>Benar!</b> ${w[3]}</div><div style="margin-top:10px">${spk(w[3],'Dengarkan kalimat')}</div>`)+`<div class="row">${btn('zn','Lanjut','acc')}</div>`:`<div class="row">${btn('zc','Hapus semua')}${btn('zk','Periksa','acc')}</div>`}`};
+function newQ(){const i=pick(),o=sh([i,...sh(pool().filter(j=>j!=i)).slice(0,3)]);S.q={i,o,t:[],done:0,fix:0,l:S.qn++%2==1}}
+function newSp(){const i=pick();S.sp={i,t:Math.random()<.5?W[i][0]:W[i][3],tr:0,r:null,msg:'',on:0}}
+function check(alts){const s=S.sp,tg=nz(s.t),hs=alts.flatMap(nz);let w=tg.map(t=>[t,hs.some(h=>sim(t,h))]);let sc=w.filter(x=>x[1]).length/w.length;const j=tg.join(''),hj=alts.map(a=>nz(a).join(''));if(sc<.8&&hj.some(h=>sim(j,h))){w=w.map(x=>[x[0],1]);sc=1}
+s.r={w,score:sc};s.on=0;s.msg='';if(sc<.8){s.tr++;P.wrong[s.i]=(P.wrong[s.i]||0)+1;save()}render()}
+function mic(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,s=S.sp;if(!R){s.msg='Perangkat ini belum mendukung pengenalan suara. Coba Chrome atau Safari.';render();return}
+const r=new R();r.lang='nl-NL';r.maxAlternatives=3;r.onresult=e=>check([...e.results[0]].map(a=>a.transcript));r.onerror=e=>{s.on=0;s.msg=e.error=='not-allowed'?'Izinkan akses mikrofon di pengaturan browser, lalu coba lagi.':'Suara tidak terdengar. Coba lagi.';render()};r.onend=()=>{if(s.on){s.on=0;s.msg='Suara tidak terdengar. Coba lagi.';render()}};s.on=1;s.msg='';s.r=s.r&&s.r.score>=.8?null:s.r;render();try{r.start()}catch(e){s.on=0}}
+const nextCard=()=>{S.fix=0;S.rev=0;const pl=pool(),p=Math.max(0,pl.indexOf(S.ci));for(let k=1;k<=pl.length;k++){const j=pl[(p+k)%pl.length];if(!P.known[j]){S.ci=j;return}}S.ci=pl[(p+1)%pl.length]};
+const A={
+tab(v){S.tab=v;if(v=='quiz'&&!S.q)newQ();if(v=='speak'&&!S.sp)newSp();if(v=='susun'&&!S.sz)newSz()},
+th(v){S.th=+v;S.ci=TH[S.th][1][0];S.rev=0;S.fix=0;S.q=null;S.sp=null;S.sz=null;S.last=-1},
+say(v,b){say(decodeURIComponent(v),+b.dataset.r)},slow(){say(S.sp.t,.55)},
+rev(){S.rev=1},yes(){P.known[S.ci]=1;P.cb[S.ci]=0;save();nextCard()},
+no(){P.cb[S.ci]=(P.cb[S.ci]||0)+1;P.wrong[S.ci]=(P.wrong[S.ci]||0)+1;if(P.cb[S.ci]>=3){P.cb[S.ci]=0;S.fix=1}else nextCard();save()},next(){nextCard()},
+opt(v){const q=S.q,o=+v;if(q.done)return;if(o==q.i){q.done=1;P.ok++}else{q.t.push(o);P.wrong[q.i]=(P.wrong[q.i]||0)+1;if(q.t.length>=3){q.done=1;q.fix=1}else if(q.t.length==2)say(W[q.i][0],.8)}save()},
+nq(){newQ()},zp(v){S.sz.pk.push(+v)},zu(v){S.sz.pk=S.sz.pk.filter(k=>k!=+v)},zc(){S.sz.pk=[]},zn(){newSz()},zk(){const z=S.sz;if(z.pk.length<z.tk.length){z.msg='Pilih semua kata dulu.';return}if(z.pk.map(k=>z.tk[k]).join(' ')==W[z.i][3]){z.done=1;P.ok++}else{z.tr++;P.wrong[z.i]=(P.wrong[z.i]||0)+1;if(z.tr>=3){z.done=1;z.fix=1}else z.msg=z.tr==1?'Belum tepat. Petunjuk: kalimat diawali “'+z.tk[0]+'”.':'Masih belum. Dua kata pertama: “'+z.tk.slice(0,2).join(' ')+'”.'}save()},ask(v){S.tab='tanya';S.tin='Tolong jelaskan kata “'+W[+v][0]+'” dengan lebih sederhana dan beri dua contoh lain.'},chip(v){S.tin=decodeURIComponent(v);send()},send(){send()},clear(){S.tt=[];S.te=''},mic(){mic()},skip(){newSp()},again(){S.sp.tr=0;S.sp.r=null;S.sp.msg=''}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const f=A[b.dataset.a];if(f){f(b.dataset.v,b);if(b.dataset.a!='say'&&b.dataset.a!='slow'&&b.dataset.a!='mic')render()}});
+function render(){const T=[['home','Beranda'],['cards','Kartu'],['quiz','Latihan'],['susun','Susun'],['speak','Bicara']];$('#app').innerHTML=`<div class="fl"><i style="background:#C2410C"></i><i style="background:#fff"></i><i style="background:#21468B"></i></div><main>${V[S.tab]()}</main><nav>${T.map(t=>`<button class="${S.tab==t[0]?'on':''}" data-a="tab" data-v="${t[0]}">${t[1]}</button>`).join('')}</nav>`;if(S.tab!='tanya')window.scrollTo(0,0)}
+try{speechSynthesis.getVoices()}catch(e){}
+render();
+</script></body></html>
